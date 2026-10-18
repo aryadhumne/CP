@@ -1,36 +1,82 @@
-
 # OOP Multi-Game Engine
 
-A C++17 project using SFML 2.5 and object-oriented programming.
+A C++17 mini-game project built using SFML 3.0.2. It includes a graphical menu and two simple games.
 
 ## Games
 
 1. Snake
-2. Pong
-3. Breakout
-4. Space Invaders
-5. Flappy Bird-style game
-6. Doodle Jump-style game
+2. Tic-Tac-Toe
 
 ## Controls
 
-- Main menu: keys 1-6
-- Return to menu: Escape
-- Snake: Arrow keys
-- Pong: W/S and Up/Down
-- Breakout: Left/Right arrows
-- Space Invaders: Left/Right arrows and Space
-- Flappy Bird: Space
-- Doodle Jump: Left/Right arrows
-- Restart supported games: R
+### Main Menu
+- Press `1` to play Snake
+- Press `2` to play Tic-Tac-Toe
+- Press `ESC` to quit
+
+### Snake
+- `W` - Move up
+- `A` - Move left
+- `S` - Move down
+- `D` - Move right
+- `R` - Restart after Game Over
+- `ESC` - Return to menu
+
+### Tic-Tac-Toe
+- Left mouse click - Place X or O
+- `R` - Restart the game
+- `ESC` - Return to menu
+
+## Features
+
+- Graphical game window
+- Simple main menu
+- Snake movement and food collection
+- Score tracking and collision detection
+- Two-player Tic-Tac-Toe
+- Win and draw detection
+- Restart support
+
+## Requirements
+
+- C++17 compiler
+- CMake
+- Ninja
+- SFML 3.0.2
+- MSYS2 UCRT64 on Windows
 
 ## Build
 
-Requires CMake, a C++17 compiler, and SFML 2.5.
+Configure the project:
 
-Configure and build:
+```bash
+cmake -S . -B build -G Ninja -DCMAKE_CXX_COMPILER=C:/msys64/ucrt64/bin/g++.exe
+```
 
-    cmake -S . -B build
-    cmake --build build
+Build the project:
 
-Run the executable created in the build folder.
+```bash
+cmake --build build
+```
+
+## Run
+
+On Windows, run the executable from the project folder:
+
+```bash
+.\build\games.exe
+```
+
+## Project Structure
+
+```text
+oops/
+├── main.cpp
+├── CMakeLists.txt
+├── README.md
+└── build/
+```
+
+## License
+
+This project is available for learning and personal use.
