@@ -6,15 +6,18 @@ A C++17 mini-game project built using SFML 3.0.2. It includes a graphical menu a
 
 1. Snake
 2. Tic-Tac-Toe
+3. Flappy Bird
 
 ## Controls
 
 ### Main Menu
+
 - Press `1` to play Snake
 - Press `2` to play Tic-Tac-Toe
 - Press `ESC` to quit
 
 ### Snake
+
 - `W` - Move up
 - `A` - Move left
 - `S` - Move down
@@ -23,6 +26,7 @@ A C++17 mini-game project built using SFML 3.0.2. It includes a graphical menu a
 - `ESC` - Return to menu
 
 ### Tic-Tac-Toe
+
 - Left mouse click - Place X or O
 - `R` - Restart the game
 - `ESC` - Return to menu
@@ -57,6 +61,8 @@ Build the project:
 
 ```bash
 cmake --build build
+
+g++ main.cpp src/Flappy_Bird.cpp -I include -o app
 ```
 
 ## Run
@@ -65,6 +71,8 @@ On Windows, run the executable from the project folder:
 
 ```bash
 .\build\games.exe
+
+./app
 ```
 
 ## Project Structure

@@ -1,4 +1,239 @@
-#include <SFML/Graphics.hpp>
+#include <iostream>
+#include "Flappy_Bird.h"
+#include <string>
+#include <fstream>
+using namespace std;
+static const string AUTH_FILE = "auth.txt";
+string currUser, currPass;
+
+static bool parseLine(const string &line, string &user, string &pass, string &data)
+{
+    size_t p1 = line.find('|');
+    if (p1 == string::npos)
+        return false;
+    size_t p2 = line.find('|', p1 + 1);
+    if (p2 == string::npos)
+        return false;
+    user = line.substr(0, p1);
+    pass = line.substr(p1 + 1, p2 - p1 - 1);
+    data = line.substr(p2 + 1);
+    return true;
+}
+
+static bool validField(const string &s, bool allowEmpty = false)
+{
+    if (s.empty())
+        return allowEmpty;
+    return s.find_first_of("|\r\n") == string::npos;
+}
+
+static vector<string> readAllLines()
+{
+    vector<string> lines;
+    ifstream in(AUTH_FILE);
+    string line;
+    while (getline(in, line))
+        if (!line.empty())
+            lines.push_back(line);
+    return lines;
+}
+
+static bool writeAllLines(const vector<string> &lines)
+{
+    ofstream out(AUTH_FILE, ios::trunc);
+    if (!out)
+        return false;
+    for (const string &l : lines)
+        out << l << '\n';
+    return true;
+}
+
+bool userExists(const string &user)
+{
+    for (const string &line : readAllLines())
+    {
+        string u, p, d;
+        if (parseLine(line, u, p, d) && u == user)
+            return true;
+    }
+    return false;
+}
+
+bool appendUser(const string &user, const string &pass, const string &data = "")
+{
+    if (!validField(user) || !validField(pass) || !validField(data, true))
+        return false;
+    ofstream out(AUTH_FILE, ios::app);
+    if (!out)
+        return false;
+    out << user << '|' << pass << '|' << data << '\n';
+    return true;
+}
+
+bool updateUserData(const string &user, const string &data)
+{
+    if (!validField(data, true))
+        return false;
+
+    vector<string> lines = readAllLines();
+    bool found = false;
+    for (string &line : lines)
+    {
+        string u, p, d;
+        if (parseLine(line, u, p, d) && u == user)
+        {
+            line = u + '|' + p + '|' + data;
+            found = true;
+            break;
+        }
+    }
+    return found && writeAllLines(lines);
+}
+
+bool registerUser(const string &user, const string &pass, const string &data = "")
+{
+    if (userExists(user))
+        return false;
+    return appendUser(user, pass, data);
+}
+
+bool checkLogin(const string &user, const string &pass)
+{
+    for (const string &line : readAllLines())
+    {
+        string u, p, d;
+        if (parseLine(line, u, p, d) && u == user)
+            return p == pass;
+    }
+    return false;
+}
+
+bool readUserData(const string &user, string &data)
+{
+    for (const string &line : readAllLines())
+    {
+        string u, p, d;
+        if (parseLine(line, u, p, d) && u == user)
+        {
+            data = d;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool clearUserData(const string &user)
+{
+    vector<string> lines = readAllLines();
+    bool found = false;
+    for (string &line : lines)
+    {
+        string u, p, d;
+        if (parseLine(line, u, p, d) && u == user)
+        {
+            line = u + '|' + p + '|';
+            found = true;
+            break;
+        }
+    }
+    return found && writeAllLines(lines);
+}
+
+bool removeUser(const string &user)
+{
+    vector<string> lines = readAllLines();
+    vector<string> kept;
+    bool found = false;
+    for (const string &line : lines)
+    {
+        string u, p, d;
+        if (parseLine(line, u, p, d) && u == user)
+            found = true;
+        else
+            kept.push_back(line);
+    }
+    return found && writeAllLines(kept);
+}
+
+bool auth()
+{
+    int choice;
+    ifstream file(AUTH_FILE);
+    if (!file.is_open())
+        return false;
+
+    cout << "Enter a choice : \n1. Login\n2. Register\n3. Exit\n";
+    cin >> choice;
+    switch (choice)
+    {
+    case 1:
+    {
+        string user, pass;
+        cout << "Enter username : ";
+        cin >> user;
+        cout << "Enter password : ";
+        cin >> pass;
+        if (checkLogin(user, pass))
+        {
+            cout << "Login successful\n";
+            currPass = pass;
+            currUser = user;
+            return true;
+        }
+        else
+        {
+            cout << "Invalid username or password\n";
+            return false;
+        }
+    }
+    break;
+    case 2:
+    {
+        string user, pass;
+        cout << "Enter username : ";
+        cin >> user;
+        cout << "Enter password : ";
+        cin >> pass;
+        if (registerUser(user, pass))
+        {
+            cout << "Registration successful\n";
+            currPass = pass;
+            currUser = user;
+            return true;
+        }
+        else
+        {
+            cout << "Username already exists\n";
+            return false;
+        }
+    }
+    break;
+    default:
+    {
+        cout << "Exiting...\n";
+        return false;
+    }
+    }
+
+    file.close();
+    return false;
+}
+
+int main()
+{
+    if (!auth())
+        return 0;
+
+    FlappyBird bird;
+    int score = bird.start(85);
+    if (score > -1)
+    {
+        updateUserData(currUser, to_string(score));
+    }
+    return 0;
+}
+
+/*#include <SFML/Graphics.hpp>
 #include <optional>
 #include <vector>
 #include <cstdlib>
@@ -13,7 +248,7 @@ sf::Font font;
     if (!font.openFromFile("C:/Windows/Fonts/arial.ttf"))
         return 1;
 
-    int game = 0; 
+    int game = 0;
     vector<sf::Vector2i> snake = {{10, 10}, {9, 10}, {8, 10}};
     sf::Vector2i direction = {1, 0};
     sf::Vector2i food = {15, 8};
@@ -246,3 +481,4 @@ if (mouse->button == sf::Mouse::Button::Left && !ticOver) {
 
     return 0;
 }
+*/
