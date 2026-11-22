@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Flappy_Bird.h"
 #include <string>
+#include "Tetris.h"
 #include <fstream>
 using namespace std;
 static const string AUTH_FILE = "auth.txt";
@@ -224,12 +225,14 @@ int main()
     if (!auth())
         return 0;
 
-    FlappyBird bird;
+    Tetris tetris;
+
+    /*FlappyBird bird;
     int score = bird.start(85);
     if (score > -1)
     {
         updateUserData(currUser, to_string(score));
-    }
+    }*/
     return 0;
 }
 
