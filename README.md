@@ -62,7 +62,7 @@ Build the project:
 ```bash
 cmake --build build
 
-g++ main.cpp src/Flappy_Bird.cpp -I include -o app
+g++ -Iinclude main.cpp src/Tetris.cpp src/Tetromino.cpp src/Flappy_Bird.cpp src/Auth.cpp src/cardGuessing.cpp src/hangman.cpp src/r_p_s.cpp src/scramble.cpp src/tic_tac_toe.cpp -o main.exe
 ```
 
 ## Run
