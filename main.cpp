@@ -1,13 +1,14 @@
 #include <iostream>
 #include <string>
-#include "Flappy_Bird.h"
-#include "Tetris.h"
-#include "r_p_s.h"
-#include "scramble.h"
-#include "cardGuessing.h"
-#include "hangman.h"
-#include "tic_tac_toe.h"
 #include "Auth.h"
+#include "tic_tac_toe.h"
+#include "r_p_s.h"
+#include "hangman.h"
+#include "cardGuessing.h"
+#include "scramble.h"
+#include "Tetris.h"
+#include "Flappy_Bird.h"
+#include "snake.h"
 using namespace std;
 
 string currUser, currPass;
@@ -29,6 +30,7 @@ int main()
         cout << " 5. Word Scramble\n";
         cout << " 6. Tetris\n";
         cout << " 7. Flappy Bird\n";
+        cout << " 8. Snake\n";
         cout << " 0. EXIT\n";
         cout << " Input : ";
         cin >> game;
@@ -43,21 +45,17 @@ int main()
             tic_tac_toe P;
             if (mode == 1)
             {
-                score = P.play('u');
+                score = P.play('u'); // compile time Polymorphism
                 string data = "Tic Tac Toe : " + to_string(score);
                 if (score > -1)
-                {
                     a.updateUserData(currUser, data);
-                }
             }
             else
             {
                 score = P.play();
                 string data = "Tic Tac Toe : " + to_string(score);
                 if (score > -1)
-                {
                     a.updateUserData(currUser, data);
-                }
             }
             break;
         }
@@ -68,9 +66,7 @@ int main()
             score = P.play();
             string data = "Rock Paper Scissors : " + to_string(score);
             if (score > -1)
-            {
                 a.updateUserData(currUser, data);
-            }
             break;
         }
         case 3:
@@ -80,9 +76,7 @@ int main()
             score = P.play();
             string data = "Hangman : " + to_string(score);
             if (score > -1)
-            {
                 a.updateUserData(currUser, data);
-            }
             break;
         }
         case 4:
@@ -92,9 +86,7 @@ int main()
             score = P.play();
             string data = "Card Guessing : " + to_string(score);
             if (score > -1)
-            {
                 a.updateUserData(currUser, data);
-            }
             break;
         }
         case 5:
@@ -104,9 +96,7 @@ int main()
             score = P.play();
             string data = "Scramble : " + to_string(score);
             if (score > -1)
-            {
                 a.updateUserData(currUser, data);
-            }
             break;
         }
         case 6:
@@ -116,9 +106,7 @@ int main()
             score = tetris.start();
             string data = "Tetris : " + to_string(score);
             if (score > -1)
-            {
                 a.updateUserData(currUser, data);
-            }
             break;
         }
         case 7:
@@ -128,9 +116,17 @@ int main()
             score = bird.start(85);
             string data = "Flappy Bird : " + to_string(score);
             if (score > -1)
-            {
                 a.updateUserData(currUser, data);
-            }
+            break;
+        }
+        case 8:
+        {
+            cout << "\n Entered SNAKE!";
+            Snake snake;
+            score = snake.play();
+            string data = "Snake : " + to_string(score);
+            if (score > -1)
+                a.updateUserData(currUser, data);
             break;
         }
         case 0:
