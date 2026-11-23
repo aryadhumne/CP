@@ -1,90 +1,92 @@
-# OOP Multi-Game Engine
+# Ultimate Game Console
 
-A C++17 mini-game project built using SFML 3.0.2. It includes a graphical menu and two simple games.
+A C++ terminal-based multi-game engine. All games run directly in the console — no external libraries or CMake required.
 
 ## Games
 
-1. Snake
-2. Tic-Tac-Toe
-3. Flappy Bird
-
-## Controls
-
-### Main Menu
-
-- Press `1` to play Snake
-- Press `2` to play Tic-Tac-Toe
-- Press `ESC` to quit
-
-### Snake
-
-- `W` - Move up
-- `A` - Move left
-- `S` - Move down
-- `D` - Move right
-- `R` - Restart after Game Over
-- `ESC` - Return to menu
-
-### Tic-Tac-Toe
-
-- Left mouse click - Place X or O
-- `R` - Restart the game
-- `ESC` - Return to menu
-
-## Features
-
-- Graphical game window
-- Simple main menu
-- Snake movement and food collection
-- Score tracking and collision detection
-- Two-player Tic-Tac-Toe
-- Win and draw detection
-- Restart support
-
-## Requirements
-
-- C++17 compiler
-- CMake
-- Ninja
-- SFML 3.0.2
-- MSYS2 UCRT64 on Windows
-
-## Build
-
-Configure the project:
-
-```bash
-cmake -S . -B build -G Ninja -DCMAKE_CXX_COMPILER=C:/msys64/ucrt64/bin/g++.exe
-```
-
-Build the project:
-
-```bash
-cmake --build build
-
-g++ -Iinclude main.cpp src/Tetris.cpp src/Tetromino.cpp src/Flappy_Bird.cpp src/Auth.cpp src/cardGuessing.cpp src/hangman.cpp src/r_p_s.cpp src/scramble.cpp src/tic_tac_toe.cpp -o main.exe
-```
-
-## Run
-
-On Windows, run the executable from the project folder:
-
-```bash
-.\build\games.exe
-
-./app
-```
+1. Tic Tac Toe (vs Bot or Multiplayer)
+2. Rock Paper Scissors
+3. Hangman
+4. Card Guessing Game
+5. Word Scramble
+6. Tetris
+7. Flappy Bird
 
 ## Project Structure
 
-```text
+```
 oops/
-├── main.cpp
-├── CMakeLists.txt
-├── README.md
-└── build/
+├── main.cpp          ← Entry point
+├── include/          ← Header files (.h)
+│   ├── Auth.h
+│   ├── Flappy_Bird.h
+│   ├── Tetris.h
+│   ├── tic_tac_toe.h
+│   ├── hangman.h
+│   ├── r_p_s.h
+│   ├── scramble.h
+│   └── cardGuessing.h
+├── src/              ← Source files (.cpp)
+│   ├── Auth.cpp
+│   ├── Flappy_Bird.cpp
+│   ├── Tetris.cpp
+│   ├── Tetromino.cpp
+│   ├── tic_tac_toe.cpp
+│   ├── hangman.cpp
+│   ├── r_p_s.cpp
+│   ├── scramble.cpp
+│   └── cardGuessing.cpp
+├── auth.txt          ← User data (auto-created)
+└── README.md
 ```
 
-## License
+## Requirements
 
-This project is available for learning and personal use.
+- g++ compiler (MinGW on Windows / GCC on Linux/Mac)
+- C++17 or later
+
+## Build & Run
+
+### Windows (Command Prompt or PowerShell)
+
+**Compile:**
+```
+g++ -Iinclude main.cpp src/Auth.cpp src/Flappy_Bird.cpp src/Tetris.cpp src/Tetromino.cpp src/tic_tac_toe.cpp src/hangman.cpp src/r_p_s.cpp src/scramble.cpp src/cardGuessing.cpp -o main.exe
+```
+
+**Run:**
+```
+main.exe
+```
+
+### Linux / Mac
+
+**Compile:**
+```
+g++ -Iinclude main.cpp src/Auth.cpp src/Flappy_Bird.cpp src/Tetris.cpp src/Tetromino.cpp src/tic_tac_toe.cpp src/hangman.cpp src/r_p_s.cpp src/scramble.cpp src/cardGuessing.cpp -o main
+```
+
+**Run:**
+```
+./main
+```
+
+## Controls
+
+### Flappy Bird
+- `SPACE` — Flap / go up
+- `ESC` — Exit game
+
+### Tetris
+- `ESC` — Exit game
+
+### Tic Tac Toe
+- Enter position `1-9` when prompted
+
+### All other games
+- Follow on-screen instructions
+
+## Notes
+
+- `auth.txt` stores user login data. Make sure it exists in the same folder as the executable.
+- Flappy Bird and Tetris use Windows Console API — they work best on Windows.
