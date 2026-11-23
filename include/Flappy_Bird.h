@@ -1,7 +1,6 @@
 #ifndef Flappy_Bird_h
 #define Flappy_Bird_h
 #include <string>
-#include <iostream>
 #include <vector>
 
 class FlappyBird

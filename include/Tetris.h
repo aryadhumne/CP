@@ -17,6 +17,7 @@ class Tetris
     char board[MAX_ROWS][MAX_COLS];
     int rows;
     int cols;
+    int score;
     Tetromino tetrominoes[5];
 
 public:

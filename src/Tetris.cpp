@@ -6,6 +6,7 @@ using namespace std;
 
 Tetris::Tetris()
 {
+    score = 0;
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     int winCols = csbi.srWindow.Right - csbi.srWindow.Left + 1;
@@ -83,4 +84,8 @@ void Tetris::start()
             h = false;
         }
     }
+}
+
+void Tetris::drawTetromino(int tetrominoIndex, int rotation, int x, int y)
+{
 }

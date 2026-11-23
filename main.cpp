@@ -2,238 +2,101 @@
 #include "Flappy_Bird.h"
 #include <string>
 #include "Tetris.h"
-#include <fstream>
+#include "r_p_s.h"
+#include "scramble.h"
+#include "cardGuessing.h"
+#include "hangman.h"
+#include "tic_tac_toe.h"
+#include "Auth.h"
 using namespace std;
-static const string AUTH_FILE = "auth.txt";
+
 string currUser, currPass;
-
-static bool parseLine(const string &line, string &user, string &pass, string &data)
-{
-    size_t p1 = line.find('|');
-    if (p1 == string::npos)
-        return false;
-    size_t p2 = line.find('|', p1 + 1);
-    if (p2 == string::npos)
-        return false;
-    user = line.substr(0, p1);
-    pass = line.substr(p1 + 1, p2 - p1 - 1);
-    data = line.substr(p2 + 1);
-    return true;
-}
-
-static bool validField(const string &s, bool allowEmpty = false)
-{
-    if (s.empty())
-        return allowEmpty;
-    return s.find_first_of("|\r\n") == string::npos;
-}
-
-static vector<string> readAllLines()
-{
-    vector<string> lines;
-    ifstream in(AUTH_FILE);
-    string line;
-    while (getline(in, line))
-        if (!line.empty())
-            lines.push_back(line);
-    return lines;
-}
-
-static bool writeAllLines(const vector<string> &lines)
-{
-    ofstream out(AUTH_FILE, ios::trunc);
-    if (!out)
-        return false;
-    for (const string &l : lines)
-        out << l << '\n';
-    return true;
-}
-
-bool userExists(const string &user)
-{
-    for (const string &line : readAllLines())
-    {
-        string u, p, d;
-        if (parseLine(line, u, p, d) && u == user)
-            return true;
-    }
-    return false;
-}
-
-bool appendUser(const string &user, const string &pass, const string &data = "")
-{
-    if (!validField(user) || !validField(pass) || !validField(data, true))
-        return false;
-    ofstream out(AUTH_FILE, ios::app);
-    if (!out)
-        return false;
-    out << user << '|' << pass << '|' << data << '\n';
-    return true;
-}
-
-bool updateUserData(const string &user, const string &data)
-{
-    if (!validField(data, true))
-        return false;
-
-    vector<string> lines = readAllLines();
-    bool found = false;
-    for (string &line : lines)
-    {
-        string u, p, d;
-        if (parseLine(line, u, p, d) && u == user)
-        {
-            line = u + '|' + p + '|' + data;
-            found = true;
-            break;
-        }
-    }
-    return found && writeAllLines(lines);
-}
-
-bool registerUser(const string &user, const string &pass, const string &data = "")
-{
-    if (userExists(user))
-        return false;
-    return appendUser(user, pass, data);
-}
-
-bool checkLogin(const string &user, const string &pass)
-{
-    for (const string &line : readAllLines())
-    {
-        string u, p, d;
-        if (parseLine(line, u, p, d) && u == user)
-            return p == pass;
-    }
-    return false;
-}
-
-bool readUserData(const string &user, string &data)
-{
-    for (const string &line : readAllLines())
-    {
-        string u, p, d;
-        if (parseLine(line, u, p, d) && u == user)
-        {
-            data = d;
-            return true;
-        }
-    }
-    return false;
-}
-
-bool clearUserData(const string &user)
-{
-    vector<string> lines = readAllLines();
-    bool found = false;
-    for (string &line : lines)
-    {
-        string u, p, d;
-        if (parseLine(line, u, p, d) && u == user)
-        {
-            line = u + '|' + p + '|';
-            found = true;
-            break;
-        }
-    }
-    return found && writeAllLines(lines);
-}
-
-bool removeUser(const string &user)
-{
-    vector<string> lines = readAllLines();
-    vector<string> kept;
-    bool found = false;
-    for (const string &line : lines)
-    {
-        string u, p, d;
-        if (parseLine(line, u, p, d) && u == user)
-            found = true;
-        else
-            kept.push_back(line);
-    }
-    return found && writeAllLines(kept);
-}
-
-bool auth()
-{
-    int choice;
-    ifstream file(AUTH_FILE);
-    if (!file.is_open())
-        return false;
-
-    cout << "Enter a choice : \n1. Login\n2. Register\n3. Exit\n";
-    cin >> choice;
-    switch (choice)
-    {
-    case 1:
-    {
-        string user, pass;
-        cout << "Enter username : ";
-        cin >> user;
-        cout << "Enter password : ";
-        cin >> pass;
-        if (checkLogin(user, pass))
-        {
-            cout << "Login successful\n";
-            currPass = pass;
-            currUser = user;
-            return true;
-        }
-        else
-        {
-            cout << "Invalid username or password\n";
-            return false;
-        }
-    }
-    break;
-    case 2:
-    {
-        string user, pass;
-        cout << "Enter username : ";
-        cin >> user;
-        cout << "Enter password : ";
-        cin >> pass;
-        if (registerUser(user, pass))
-        {
-            cout << "Registration successful\n";
-            currPass = pass;
-            currUser = user;
-            return true;
-        }
-        else
-        {
-            cout << "Username already exists\n";
-            return false;
-        }
-    }
-    break;
-    default:
-    {
-        cout << "Exiting...\n";
-        return false;
-    }
-    }
-
-    file.close();
-    return false;
-}
 
 int main()
 {
-    if (!auth())
+    Auth a;
+    int game, score;
+    if (!a.auth(currPass, currUser))
         return 0;
 
-    Tetris tetris;
-
-    /*FlappyBird bird;
-    int score = bird.start(85);
-    if (score > -1)
+    do
     {
-        updateUserData(currUser, to_string(score));
-    }*/
-    return 0;
+        cout << "\n*********************ULTIMATE GAME	CONSOLE******************** *\n 1. Tic Tac Toe\n 2. Rock PaperScisors\n 3. Hangman\n 4. Card Guessing Game\n 5. Word Scramble\n 6. Tetris\n 7. Flappy Bird\n 0. EXIT\n Input : ";
+        cin >> game;
+        switch (game)
+        {
+        case 1:
+        {
+            int mode;
+            cout << "\n Entered TIC TAC TOE!!\n Enter mode Multiplayer(1) or Bot(2) : ";
+            cin >> mode;
+            tic_tac_toe P;
+            if (mode == 1)
+            {
+                P.play('u'); // compile time Polymorphism
+            }
+            else
+            {
+                P.play();
+            }
+            break;
+        }
+        case 2:
+        {
+            cout << "\n Entered ROCK PAPER SCISSORS!!";
+            r_p_s P;
+            score = P.play();
+            break;
+        }
+        case 3:
+        {
+            cout << "\n Entered HANGMAN!!";
+            hangman P;
+            score = P.play();
+            break;
+        }
+        case 4:
+        {
+            cout << "\n Entered CARD GUESSING GAME!!";
+            cardGuessing P;
+            score = P.play();
+            break;
+        }
+        case 5:
+        {
+            cout << "\n Entered WORD SCRAMBLE!!";
+            scramble P;
+            score = P.play();
+            break;
+        }
+        case 6:
+        {
+            cout << "\n Entred TETRIS!";
+            Tetris tetris;
+            break;
+        }
+        case 7:
+        {
+            cout << "\n Entered FLAPPY BIRD!";
+            FlappyBird bird;
+            score = bird.start(85);
+            if (score > -1)
+            {
+                a.updateUserData(currUser, to_string(score));
+            }
+            break;
+        }
+        case 0:
+        {
+            break;
+        }
+        default:
+        {
+            cout << "\n INVALID INPUT!!\n Enter again!";
+            break;
+        }
+        }
+    } while (game != 0);
 }
 
 /*#include <SFML/Graphics.hpp>
