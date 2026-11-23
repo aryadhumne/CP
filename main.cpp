@@ -73,6 +73,7 @@ int main()
         {
             cout << "\n Entred TETRIS!";
             Tetris tetris;
+            score = tetris.start();
             break;
         }
         case 7:

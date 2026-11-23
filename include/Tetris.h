@@ -5,6 +5,7 @@
 class Tetromino
 {
     std::string shape[4][4];
+    friend class Tetris;
 
 public:
     Tetromino();
@@ -24,7 +25,7 @@ public:
     Tetris();
     ~Tetris();
     void drawBoard();
-    void start();
+    int start();
     void drawTetromino(int tetrominoIndex, int rotation, int x, int y);
     bool checkCollision(int tetrominoIndex, int rotation, int x, int y);
     void placeTetromino(int tetrominoIndex, int rotation, int x, int y);
