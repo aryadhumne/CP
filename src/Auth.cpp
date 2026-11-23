@@ -69,10 +69,30 @@ bool Auth::appendUser(const string &user, const string &pass, const string &data
     return true;
 }
 
+#include <sstream>
+
+static string trim(const string &s)
+{
+    size_t a = s.find_first_not_of(" \t");
+    if (a == string::npos)
+        return "";
+    size_t b = s.find_last_not_of(" \t");
+    return s.substr(a, b - a + 1);
+}
+
 bool Auth::updateUserData(const string &user, const string &data)
 {
     if (!validField(data, true))
         return false;
+
+    size_t colon = data.find(':');
+    if (colon == string::npos)
+        return false;
+    string game = trim(data.substr(0, colon));
+    string score = trim(data.substr(colon + 1));
+    if (game.empty() || score.empty())
+        return false;
+    string entry = game + ':' + score;
 
     vector<string> lines = readAllLines();
     bool found = false;
@@ -81,7 +101,36 @@ bool Auth::updateUserData(const string &user, const string &data)
         string u, p, d;
         if (parseLine(line, u, p, d) && u == user)
         {
-            line = u + '|' + p + '|' + data;
+            // go through existing entries, replace the one with the same game name
+            vector<string> entries;
+            bool replaced = false;
+            stringstream ss(d);
+            string item;
+            while (getline(ss, item, ','))
+            {
+                if (item.empty())
+                    continue;
+                size_t c = item.find(':');
+                string name = trim(c == string::npos ? item : item.substr(0, c));
+                if (name == game)
+                {
+                    item = entry;
+                    replaced = true;
+                }
+                entries.push_back(item);
+            }
+            if (!replaced)
+                entries.push_back(entry);
+
+            string newData;
+            for (size_t i = 0; i < entries.size(); i++)
+            {
+                if (i > 0)
+                    newData += ',';
+                newData += entries[i];
+            }
+
+            line = u + '|' + p + '|' + newData;
             found = true;
             break;
         }
