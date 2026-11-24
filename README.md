@@ -12,6 +12,7 @@ A C++ terminal-based multi-game engine. All games run directly in the console - 
 6. Tetris
 7. Flappy Bird
 8. Snake
+9. Pong
 
 ## Project Structure
 
@@ -27,7 +28,8 @@ oops/
 |   |-- r_p_s.h
 |   |-- scramble.h
 |   |-- cardGuessing.h
-|   `-- snake.h
+|   |-- snake.h
+|   `-- pong.h
 |-- src/                  <- Source files (.cpp)
 |   |-- Auth.cpp
 |   |-- Flappy_Bird.cpp
@@ -38,7 +40,8 @@ oops/
 |   |-- r_p_s.cpp
 |   |-- scramble.cpp
 |   |-- cardGuessing.cpp
-|   `-- snake.cpp
+|   |-- snake.cpp
+|   `-- pong.cpp
 |-- auth.txt              <- User data (auto-created)
 `-- README.md
 ```
@@ -54,7 +57,7 @@ oops/
 
 **Compile:**
 ```
-g++ -Iinclude main.cpp src/Auth.cpp src/Flappy_Bird.cpp src/Tetris.cpp src/Tetromino.cpp src/tic_tac_toe.cpp src/hangman.cpp src/r_p_s.cpp src/scramble.cpp src/cardGuessing.cpp src/snake.cpp -o main.exe
+g++ -Iinclude main.cpp src/Auth.cpp src/Flappy_Bird.cpp src/Tetris.cpp src/Tetromino.cpp src/tic_tac_toe.cpp src/hangman.cpp src/r_p_s.cpp src/scramble.cpp src/cardGuessing.cpp src/snake.cpp src/pong.cpp -o main.exe
 ```
 
 **Run:**
@@ -66,7 +69,7 @@ main.exe
 
 **Compile:**
 ```
-g++ -Iinclude main.cpp src/Auth.cpp src/Flappy_Bird.cpp src/Tetris.cpp src/Tetromino.cpp src/tic_tac_toe.cpp src/hangman.cpp src/r_p_s.cpp src/scramble.cpp src/cardGuessing.cpp src/snake.cpp -o main
+g++ -Iinclude main.cpp src/Auth.cpp src/Flappy_Bird.cpp src/Tetris.cpp src/Tetromino.cpp src/tic_tac_toe.cpp src/hangman.cpp src/r_p_s.cpp src/scramble.cpp src/cardGuessing.cpp src/snake.cpp src/pong.cpp -o main
 ```
 
 **Run:**
@@ -75,6 +78,12 @@ g++ -Iinclude main.cpp src/Auth.cpp src/Flappy_Bird.cpp src/Tetris.cpp src/Tetro
 ```
 
 ## Controls
+
+### Pong
+- `W` / `S` - Player 1 paddle (left)
+- `UP` / `DOWN` arrow - Player 2 paddle (right)
+- First to 5 points wins!
+- `ESC` - Exit game
 
 ### Snake
 - Arrow keys - Move
@@ -85,8 +94,8 @@ g++ -Iinclude main.cpp src/Auth.cpp src/Flappy_Bird.cpp src/Tetris.cpp src/Tetro
 - `ESC` - Exit game
 
 ### Tetris
-- Left/Right arrow - Move piece
-- Down arrow - Drop faster
+- `LEFT` / `RIGHT` arrow - Move piece
+- `DOWN` arrow - Drop faster
 - `SPACE` - Rotate piece
 - `ESC` - Exit game
 
@@ -99,4 +108,4 @@ g++ -Iinclude main.cpp src/Auth.cpp src/Flappy_Bird.cpp src/Tetris.cpp src/Tetro
 ## Notes
 
 - `auth.txt` stores user login data. Make sure it exists in the same folder as the executable.
-- Snake, Flappy Bird and Tetris use Windows Console API - they work best on Windows.
+- Snake, Flappy Bird, Tetris and Pong use Windows Console API - they work best on Windows.
