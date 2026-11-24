@@ -9,6 +9,7 @@
 #include "Tetris.h"
 #include "Flappy_Bird.h"
 #include "snake.h"
+#include "pong.h"
 using namespace std;
 
 string currUser, currPass;
@@ -31,6 +32,7 @@ int main()
         cout << " 6. Tetris\n";
         cout << " 7. Flappy Bird\n";
         cout << " 8. Snake\n";
+        cout << " 9. Pong\n";
         cout << " 0. EXIT\n";
         cout << " Input : ";
         cin >> game;
@@ -125,6 +127,16 @@ int main()
             Snake snake;
             score = snake.play();
             string data = "Snake : " + to_string(score);
+            if (score > -1)
+                a.updateUserData(currUser, data);
+            break;
+        }
+        case 9:
+        {
+            cout << "\n Entered PONG!";
+            Pong pong;
+            score = pong.play();
+            string data = "Pong : " + to_string(score);
             if (score > -1)
                 a.updateUserData(currUser, data);
             break;
