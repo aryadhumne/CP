@@ -1,1 +1,2 @@
 Dnyana|2557|4,Rock Paper Scissors:2,Hangman:1,Card Guessing:0,Flappy Bird:20
+aryad|1234|Snake:0
