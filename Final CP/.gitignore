@@ -1,0 +1,8 @@
+@"
+build/
+*.exe
+*.dll
+*.o
+*.obj
+.vscode/
+"@ | Set-Content .gitignore
