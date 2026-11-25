@@ -10,6 +10,9 @@
 #include "Flappy_Bird.h"
 #include "snake.h"
 #include "pong.h"
+#include "Breakout.h"
+#include "DoodleJump.h"
+#include "SpaceInvaders.h"
 using namespace std;
 
 string currUser, currPass;
@@ -33,6 +36,9 @@ int main()
         cout << " 7. Flappy Bird\n";
         cout << " 8. Snake\n";
         cout << " 9. Pong\n";
+        cout << " 10. Breakout\n";
+        cout << " 11. Doodle Jump\n";
+        cout << " 12. Space Invaders\n";
         cout << " 0. EXIT\n";
         cout << " Input : ";
         cin >> game;
@@ -141,6 +147,45 @@ int main()
                 a.updateUserData(currUser, data);
             break;
         }
+        case 10:
+{
+    cout << "\n Entered BREAKOUT!";
+    Breakout breakout;
+    score = breakout.play();
+
+    string data = "Breakout : " + to_string(score);
+
+    if (score > -1)
+        a.updateUserData(currUser, data);
+
+    break;
+}
+case 11:
+{
+    cout << "\n Entered DOODLE JUMP!";
+    DoodleJump doodle;
+    score = doodle.play();
+
+    string data = "Doodle Jump : " + to_string(score);
+
+    if (score > -1)
+        a.updateUserData(currUser, data);
+
+    break;
+}
+case 12:
+{
+    cout << "\n Entered SPACE INVADERS!";
+    SpaceInvaders space;
+    score = space.play();
+
+    string data = "Space Invaders : " + to_string(score);
+
+    if (score > -1)
+        a.updateUserData(currUser, data);
+
+    break;
+}
         case 0:
         {
             cout << "\n Goodbye!\n";
