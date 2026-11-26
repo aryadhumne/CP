@@ -13,6 +13,9 @@
 #include "Breakout.h"
 #include "DoodleJump.h"
 #include "SpaceInvaders.h"
+#include "Othello.h"
+#include "Game2048.h"
+#include "Sudoku.h"
 using namespace std;
 
 string currUser, currPass;
@@ -39,6 +42,9 @@ int main()
         cout << " 10. Breakout\n";
         cout << " 11. Doodle Jump\n";
         cout << " 12. Space Invaders\n";
+        cout << " 13. Othello\n";
+        cout << " 14. 2048\n";
+        cout << " 15. Sudoku\n";
         cout << " 0. EXIT\n";
         cout << " Input : ";
         cin >> game;
@@ -184,6 +190,36 @@ case 12:
     if (score > -1)
         a.updateUserData(currUser, data);
 
+    break;
+}
+case 13:
+{
+    cout << "\n Entered OTHELLO!";
+    Othello game;
+    score = game.play();
+    string data = "Othello : " + to_string(score);
+    if (score > -1)
+        a.updateUserData(currUser, data);
+    break;
+}
+case 14:
+{
+    cout << "\n Entered 2048!";
+    Game2048 g;
+    score = g.play();
+    string data = "2048 : " + to_string(score);
+    if (score > -1)
+        a.updateUserData(currUser, data);
+    break;
+}
+case 15:
+{
+    cout << "\n Entered SUDOKU!";
+    Sudoku s;
+    score = s.play();
+    string data = "Sudoku : " + to_string(score);
+    if (score > -1)
+        a.updateUserData(currUser, data);
     break;
 }
         case 0:
